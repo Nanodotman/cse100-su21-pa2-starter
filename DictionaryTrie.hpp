@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include "Node.hpp"
 
 using namespace std;
 
@@ -19,6 +20,7 @@ using namespace std;
 class DictionaryTrie {
   private:
     // TODO: add private members and helper methods here
+    Node* root;
   public:
     /* TODO: add function header */
     DictionaryTrie();

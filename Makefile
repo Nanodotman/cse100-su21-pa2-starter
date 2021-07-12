@@ -9,9 +9,11 @@ LDFLAGS=-g
 
 all: autocomplete
 
-autocomplete: util.o DictionaryTrie.o
+autocomplete: util.o DictionaryTrie.o Node.o
 
 DictionaryTrie.o: DictionaryTrie.hpp
+
+Node.o: Node.cpp
 
 util.o: util.hpp
 
