@@ -27,3 +27,4 @@ Node::~Node(void) {
     delete(mid);
     delete(right);
 }                           // now that all of my descendants have been destroyed, delete me
+

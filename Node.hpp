@@ -19,6 +19,7 @@ class Node {
         Node* left;
         Node* mid;
         Node* right;
+
         Node(char ch);
 		Node();          		// Node constructor
 		~Node();         		// Node destructor
