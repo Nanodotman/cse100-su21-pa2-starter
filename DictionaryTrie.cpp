@@ -35,9 +35,14 @@ void DictionaryTrie::traverse(Node* curr, vector<pair<int, string> >& v, string 
 
 /* TODO */
 bool DictionaryTrie::insert(string word, unsigned int freq) {
-    Node* curr = this->root;
     unsigned int index = 0;
+    if (this->root == NULL) {
+        Node* newNode = new Node(word[index]);
+        this->root = newNode;
+    }
+    Node* curr = this->root;
     char letter = word[index];
+    
     while (true) {
         // left child
         if (letter < curr->label){
@@ -185,9 +190,11 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
     // sort vector
     std::sort(pairsV.rbegin(), pairsV.rend());
 
-    // Remove elements until pairsV.size == numCompletions
-    pairsV.resize(numCompletions);
-
+    // Remove elements sp
+    if (pairsV.size() > numCompletions) {
+        pairsV.resize(numCompletions);
+    }
+    
     for (pair<int, string> p : pairsV) {
         ret.push_back(p.second);
     }
