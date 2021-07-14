@@ -26,7 +26,7 @@ class DictionaryTrie {
     DictionaryTrie();
 
     /* TODO: add function header */
-    void traverse(Node* root, vector<string>& v, string str);
+    void traverse(Node* root, vector<pair<int, string> >& v, string str);
 
     /* TODO: add function header */
     bool insert(string word, unsigned int freq);

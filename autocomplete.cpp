@@ -35,6 +35,7 @@ int main(int argc, char** argv)
     in.open(argv[1], ios::binary);
     string word;
 
+    cout << "Putabida" << endl;
 
     Utils::load_dict(*dt, in);
     in.close();

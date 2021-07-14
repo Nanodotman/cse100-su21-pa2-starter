@@ -4,6 +4,7 @@
  * Author:
  */
 #include "DictionaryTrie.hpp"
+#include <algorithm>
 #include <iostream>
 
 /* TODO */
@@ -12,7 +13,7 @@ DictionaryTrie::DictionaryTrie() {
 }
 
 /* TODO */
-void DictionaryTrie::traverse(Node* curr, vector<string>& v, string str) {
+void DictionaryTrie::traverse(Node* curr, vector<pair<int, string> >& v, string str) {
 
     if (curr == NULL) {
         return;
@@ -25,7 +26,7 @@ void DictionaryTrie::traverse(Node* curr, vector<string>& v, string str) {
     str += curr->label;
 
     if (curr->is_word) {
-        v.push_back(str);
+        v.push_back(make_pair(curr->frequency, str));
     }
 
     traverse(curr->mid, v, str);
@@ -35,7 +36,7 @@ void DictionaryTrie::traverse(Node* curr, vector<string>& v, string str) {
 /* TODO */
 bool DictionaryTrie::insert(string word, unsigned int freq) {
     Node* curr = this->root;
-    int index = 0;
+    unsigned int index = 0;
     char letter = word[index];
     while (true) {
         // left child
@@ -113,7 +114,7 @@ bool DictionaryTrie::insert(string word, unsigned int freq) {
 /* TODO */
 bool DictionaryTrie::find(string word) const {
     Node* curr = this->root;
-    int index = 0;
+    unsigned int index = 0;
     char letter = word[index];
     while (true)
     {
@@ -148,10 +149,11 @@ bool DictionaryTrie::find(string word) const {
 /* TODO */
 vector<string> DictionaryTrie::predictCompletions(string prefix,
                                                   unsigned int numCompletions) {
-    vector<string> v;
+    vector<pair<int, string> > pairsV;
+    vector<string> ret;
     
     Node* curr = this->root;
-    index = 0;
+    unsigned int index = 0;
 
     while ((curr != NULL) && (index < prefix.length())) {
         // If current character is greater
@@ -168,24 +170,29 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
         else if (curr->label == prefix[index]) {
             // Search equal subtree
             if (curr->is_word) {
-                v.push_back(prefix);
+                pairsV.push_back(make_pair(curr->frequency, prefix));
             }
             curr = curr->mid;
             index++;
         }
         // If not found
         else {
-            return v;
+            return ret;
         }
     }
+    traverse(curr, pairsV, prefix);
 
-    traverse(curr, v, prefix);
+    // sort vector
+    std::sort(pairsV.rbegin(), pairsV.rend());
 
-    // sort list
+    // Remove elements until pairsV.size == numCompletions
+    pairsV.resize(numCompletions);
 
-    // Remove elements until list.size == numCompletions
+    for (pair<int, string> p : pairsV) {
+        ret.push_back(p.second);
+    }
 
-    return v;
+    return ret;
 }
 
 /* TODO */
