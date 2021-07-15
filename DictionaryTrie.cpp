@@ -12,6 +12,14 @@ DictionaryTrie::DictionaryTrie() {
     root = NULL;
 }
 
+bool stringComp (pair<int, string> a, pair<int, string> b) {
+    if (a.first == b.first) {
+        return a.second > b.second;
+    } else {
+        return a.first < b.first;
+    }
+}
+
 /* TODO */
 void DictionaryTrie::traverse(Node* curr, vector<pair<int, string> >& v, string str) {
 
@@ -19,17 +27,21 @@ void DictionaryTrie::traverse(Node* curr, vector<pair<int, string> >& v, string 
         return;
     }
 
-    traverse(curr->right, v, str);
-
     traverse(curr->left, v, str);
 
     str += curr->label;
+    //cout << str << endl;
 
     if (curr->is_word) {
         v.push_back(make_pair(curr->frequency, str));
     }
 
     traverse(curr->mid, v, str);
+
+    str.pop_back();
+
+    traverse(curr->right, v, str);
+
 
 }
 
@@ -221,7 +233,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
     traverse(curr, pairsV, prefix);
 
     // sort vector
-    std::sort(pairsV.rbegin(), pairsV.rend());
+    std::sort(pairsV.rbegin(), pairsV.rend(), stringComp);
 
     // Remove elements sp
     if (pairsV.size() > numCompletions) {
