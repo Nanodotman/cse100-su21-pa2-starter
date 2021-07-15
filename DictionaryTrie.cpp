@@ -35,12 +35,141 @@ void DictionaryTrie::traverse(Node* curr, vector<pair<int, string> >& v, string 
 
 /* TODO */
 bool DictionaryTrie::insert(string word, unsigned int freq) {
-    unsigned int index = 0;
-    if (this->root == NULL) {
-        Node* newNode = new Node(word[index]);
-        this->root = newNode;
-    }
+    unsigned int i = 0;
     Node* curr = this->root;
+    // insert root if inexistent
+    if (this->root == NULL) {
+        for (char& c : word) {
+            if (this->root == NULL) {
+                Node* newNode = new Node(c);
+                this->root = newNode;
+                curr = this->root;
+                continue;
+            }
+
+            Node* newNode = new Node(c);
+            curr->mid = newNode;
+            curr = curr->mid;
+        }
+        curr->frequency = freq;
+        curr->is_word = true;
+    }
+    else {
+        while (true) {
+            //word duplicate
+            if (i == word.size() - 1) {
+                if (curr->is_word == true) {
+                    break;
+                }
+            }
+
+            // left child
+            if (word[i] < curr->label) {
+                if (curr->left != NULL) {
+                    curr = curr->left;
+                }
+                else {
+                    Node* newNode = new Node(word[i]);
+                    curr->left = newNode;
+                    curr = curr->left;
+                    if (i == word.size() - 1) {
+                        curr->is_word = true;
+                        curr->frequency = freq;
+                        return true;
+                    }
+                    // insert the rest of the word
+                    for (size_t j = i + 1; j < word.size(); j++) {
+                        Node* newNode = new Node(word[j]);
+                        curr->mid = newNode;
+                        curr = curr->mid;
+                        if (j == word.size() - 1) {
+                            curr->is_word = true;
+                            curr->frequency = freq;
+                            return true;
+                        }
+                    }
+                }
+            }
+            // right child
+            else if (word[i] > curr->label) {
+                if (curr->right != NULL) {
+                    curr = curr->right;
+                }
+                else {
+                    Node* newNode = new Node(word[i]);
+                    curr->right = newNode;
+                    curr = curr->right;
+                    if (i == word.size() - 1) {
+                        curr->is_word = true;
+                        curr->frequency = freq;
+                        return true;
+                    }
+                    // insert the rest of the word
+                    for (size_t j = i + 1; j < word.size(); j++) {
+                        Node* newNode = new Node(word[j]);
+                        curr->mid = newNode;
+                        curr = curr->mid;
+                        if (j == word.size() - 1) {
+                            curr->is_word = true;
+                            curr->frequency = freq;
+                            return true;
+                        }
+                    }
+                }
+            }
+            // middle child
+            else {
+                if (curr->mid != NULL) {
+                    curr = curr->mid;
+                    i++;
+                }
+                else {
+                    // insert the rest of the word
+                    for (size_t j = i + 1; j < word.size(); j++) {
+                        Node* newNode = new Node(word[j]);
+                        curr->mid = newNode;
+                        curr = curr->mid;
+                        if (j == word.size() - 1) {
+                            curr->is_word = true;
+                            curr->frequency = freq;
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }      
+            /*
+            // left child
+            if (c < curr->label) {
+                if (curr->left != NULL) {
+                    curr = curr->left;
+                }
+                else {
+                    Node* newNode = new Node(word[index]);
+                    curr->left = newNode;
+                    curr = curr->left;
+                    index++;
+
+                    for (size_t i = index; i < word.length(); i++)
+                    {
+                        Node* midNode = new Node(word[i]);
+                        curr->mid = midNode;
+                        curr = curr->mid;
+                    }
+
+                    curr->is_word = true;
+                    curr->frequency = freq;
+                    break;
+                }
+        }
+    }
+    
+
+
+
+
     char letter = word[index];
     
     while (true) {
@@ -114,6 +243,7 @@ bool DictionaryTrie::insert(string word, unsigned int freq) {
         }
     }
     return false;
+    */
 }
 
 /* TODO */
