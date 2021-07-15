@@ -63,6 +63,7 @@ bool DictionaryTrie::insert(string word, unsigned int freq) {
                 }
             }
 
+
             // left child
             if (word[i] < curr->label) {
                 if (curr->left != NULL) {
@@ -119,20 +120,27 @@ bool DictionaryTrie::insert(string word, unsigned int freq) {
             }
             // middle child
             else {
-                if (curr->mid != NULL) {
-                    curr = curr->mid;
-                    i++;
+                if (i == word.size() - 1) {
+                    curr->is_word = true;
+                    curr->frequency = freq;
+                    return true;
                 }
                 else {
-                    // insert the rest of the word
-                    for (size_t j = i + 1; j < word.size(); j++) {
-                        Node* newNode = new Node(word[j]);
-                        curr->mid = newNode;
+                    if (curr->mid != NULL) {
                         curr = curr->mid;
-                        if (j == word.size() - 1) {
-                            curr->is_word = true;
-                            curr->frequency = freq;
-                            return true;
+                        i++;
+                    }
+                    else {
+                        // insert the rest of the word
+                        for (size_t j = i + 1; j < word.size(); j++) {
+                            Node* newNode = new Node(word[j]);
+                            curr->mid = newNode;
+                            curr = curr->mid;
+                            if (j == word.size() - 1) {
+                                curr->is_word = true;
+                                curr->frequency = freq;
+                                return true;
+                            }
                         }
                     }
                 }
