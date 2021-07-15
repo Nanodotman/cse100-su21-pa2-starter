@@ -35,12 +35,12 @@ int main(int argc, char** argv)
     in.open(argv[1], ios::binary);
     string word;
 
-    cout << "file is open" << endl;
+    //cout << "file is open" << endl;
 
     Utils::load_dict(*dt, in);
     in.close();
 
-    cout << "Dict loaded" << endl;
+    //cout << dt->find("gutter") << endl;
 
     char cont = 'y';
     unsigned int numberOfCompletions;
