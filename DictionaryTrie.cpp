@@ -207,7 +207,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
         // If current character is equal
         else if (curr->label == prefix[index]) {
             // Search equal subtree
-            if (curr->is_word) {
+            if ((curr->is_word) && (index == prefix.length() - 1)) {
                 pairsV.push_back(make_pair(curr->frequency, prefix));
             }
             curr = curr->mid;
