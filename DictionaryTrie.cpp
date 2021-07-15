@@ -57,10 +57,8 @@ bool DictionaryTrie::insert(string word, unsigned int freq) {
     else {
         while (true) {
             //word duplicate
-            if (i == word.size() - 1) {
-                if (curr->is_word == true) {
-                    break;
-                }
+            if ((i == word.size() - 1) && (curr->is_word == true)) {
+                return false;
             }
 
 
@@ -152,6 +150,9 @@ bool DictionaryTrie::insert(string word, unsigned int freq) {
 
 /* TODO */
 bool DictionaryTrie::find(string word) const {
+    if (this->root == NULL) {
+        return false;
+    }
     Node* curr = this->root;
     unsigned int i = 0;
     while (true)
